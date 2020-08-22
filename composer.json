@@ -1,0 +1,16 @@
+{
+    "name": "razielvonchronos/woo-product-attributes",
+    "description": "Extracts product attributes and save them to database for other plugins to use",
+    "authors": [
+        {
+            "name": "Spasimir Kirov",
+            "email": "spasimirkirov@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "WooProductAttributes\\Inc\\" : "inc"
+        }
+    }
+}
