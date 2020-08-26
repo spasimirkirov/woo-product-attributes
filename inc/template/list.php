@@ -27,25 +27,25 @@ $available_relations = \WooProductAttributes\Inc\Api::list_relations();
                 <form action="" method="post">
                     <table class="table table-hover table-sm">
                         <tr>
+                            <th scope="row">
+                                <input id="checkbox_select_all" class="form-control" type="checkbox">
+                            </th>
                             <th>
-                                <label>
-                                    <input id="checkbox_select_all" type="checkbox">
-                                    Категория
-                                </label>
+                                <label for="checkbox_select_all"> Категория </label>
                             </th>
                             <th>Мета атрибути</th>
                         </tr>
                         <?php foreach ($available_relations as $i => $relation): ?>
                             <tr>
-                                <td>
-                                    <label for="taxonomy_<?= $i ?>">
-                                        <input class="checkbox-taxonomy" type="checkbox" name="relation_ids[]"
-                                               value="<?= $relation['id'] ?>">
-                                        <?= $relation['category_name'] ?>
-                                    </label>
+                                <td scope="row">
+                                    <input class="checkbox-taxonomy" type="checkbox" name="relation_ids[]"
+                                           value="<?= $relation['id'] ?>">
                                 </td>
                                 <td>
-                                    <?= implode(', ', unserialize($relation['meta_value'])) ?>
+                                    <label>   <?= $relation['category_name'] ?>   </label>
+                                </td>
+                                <td>
+                                    <?= join(', ', unserialize($relation['meta_value'])) ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

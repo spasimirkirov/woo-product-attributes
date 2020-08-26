@@ -28,12 +28,9 @@ class Request
     {
         $categories = $this->api::list_categories();
         foreach ($categories as $category) {
-            foreach ($category->children as $sub_category) {
-                $sub_category->distinct_attributes = $this->api::list_category_attributes($sub_category);
-                $rows = $this->api->create_relation($sub_category->term_id, $sub_category->distinct_attributes);
-                if ($rows > 0)
-                    show_message('<div class="update notice notice-success is-dismissible"><p>Успешно генериране на атрибути за категория ' . $sub_category->name . '</p></div>');
-            }
+            count($category->children) > 0 ?
+                array_map([$this->api, 'generate_attributes'], $category->children) :
+                $this->api->generate_attributes($category);
         }
     }
 }

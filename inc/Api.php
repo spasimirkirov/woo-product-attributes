@@ -33,7 +33,7 @@ class Api
      * @param $category_repo
      * @return array
      */
-    public static function list_category_attributes($category_repo)
+    public function list_category_attributes($category_repo)
     {
         $db = new Database();
         $product_ids = get_posts(array(
@@ -62,6 +62,14 @@ class Api
         return $distinct_meta_attributes;
     }
 
+    public function generate_attributes(\WP_Term $category)
+    {
+        $distinct_attributes = $this->list_category_attributes($category);
+        $rows = $this->create_relation($category->term_id, $distinct_attributes);
+        if ($rows > 0)
+            show_message('<div class="update notice notice-success is-dismissible"><p>Успешно генериране на атрибути за категория ' . $category->name . '</p></div>');
+    }
+
     public function create_relation(int $category_id, array $attributes)
     {
         $relation = $this->db->select_attributes_relation(['category_id' => $category_id, 'row' => 0]);
@@ -87,10 +95,4 @@ class Api
     {
         return $this->db->delete_product_relation($relation_ids);
     }
-
-    public function attributes_sync(int $category_id, array $attributes)
-    {
-    }
-
-
 }
