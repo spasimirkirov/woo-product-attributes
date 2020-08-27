@@ -29,6 +29,12 @@ class Api
         return $categories;
     }
 
+    public static function list_distinct_relation_metas()
+    {
+        $db = new Database();
+        return $db->select_distinct_relation_metas();
+    }
+
     /**
      * @param $category_repo
      * @return array
@@ -75,8 +81,8 @@ class Api
         $relation = $this->db->select_attributes_relation(['category_id' => $category_id, 'row' => 0]);
         $serialized_attributes = serialize($attributes);
         return $relation ?
-            $this->db->update_product_relation($category_id, $serialized_attributes) :
-            $this->db->insert_product_relation($category_id, $serialized_attributes);
+            $this->db->update_attribute_relation($category_id, $serialized_attributes) :
+            $this->db->insert_attribute_relation($category_id, $serialized_attributes);
     }
 
     public function get_relations()
@@ -93,6 +99,6 @@ class Api
 
     public function delete_relations(array $relation_ids)
     {
-        return $this->db->delete_product_relation($relation_ids);
+        return $this->db->delete_attribute_relation($relation_ids);
     }
 }

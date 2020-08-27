@@ -53,19 +53,19 @@ class Database
         return $this->wpdb()->get_results($sql, $params['output']);
     }
 
-    function insert_product_relation($category_id, $product_attributes)
+    function insert_attribute_relation($category_id, $product_attributes)
     {
         $sql = $this->wpdb()->prepare("INSERT INTO `{$this->wpdb()->base_prefix}woo_product_attributes` (`category_id`, `meta_value`) VALUES ('%d','%s');", $category_id, $product_attributes);
         return $this->wpdb()->query($sql);
     }
 
-    function update_product_relation($category_id, $product_attributes)
+    function update_attribute_relation($category_id, $product_attributes)
     {
         $sql = $this->wpdb()->prepare("UPDATE `{$this->wpdb()->base_prefix}woo_product_attributes` SET `meta_value` = '%s' WHERE `category_id` = '%d';", $product_attributes, $category_id);
         return $this->wpdb()->query($sql);
     }
 
-    function delete_product_relation(array $relation_ids)
+    function delete_attribute_relation(array $relation_ids)
     {
         $sql = "DELETE FROM `{$this->wpdb()->base_prefix}woo_product_attributes` WHERE `id` IN(" . implode(",", $relation_ids) . ");";
         return $this->wpdb()->query($sql);
@@ -92,6 +92,19 @@ class Database
         $sql = "SELECT `post_id`, `meta_value` as `_product_attributes` FROM `{$prefix}postmeta` WHERE meta_key ='_product_attributes'";
         $sql .= " AND `post_id` IN(" . implode(', ', $post_ids) . ")";
         return $this->wpdb()->get_results($sql, 'ARRAY_A');
+    }
+
+    public function select_distinct_relation_metas()
+    {
+        $metas = [];
+        $relations = $this->select_attributes_relation(['col' => 3]);
+        $relation_array = array_map('unserialize', $relations);
+        foreach ($relation_array as $relation) {
+            foreach ($relation as $meta)
+                if (!in_array($meta, $metas))
+                    $metas[] = $meta;
+        }
+        return $metas;
     }
 
 }
