@@ -17,9 +17,6 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-define('BASE_PATH', plugin_dir_path(__FILE__));
-define('BASE_URL', plugin_dir_url(__FILE__));
-
 // include the Composer autoload file
 require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
